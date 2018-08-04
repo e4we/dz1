@@ -34,22 +34,15 @@ function map(array, fn) {
  Напишите аналог встроенного метода reduce для работы с массивами
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
-function reduce(array, fn, initial) { 
-    let prevVal, from;
-
-    if (initial === undefined) {
-        prevVal = array [0];
-        from = 1;
-    } else {
-        prevVal = initial;
-        from = 0;
-    }
+function reduce(array, fn, initial) {
+    let prev = initial || array[0];
+    let from = initial ? 0 : 1;
     
     for (let i = from; i < array.length; i++) {
-        prevVal = fn(prevVal, array[i], i, array);
+        prev = fn(prev, array[i], i, array);
     }
 
-    return prevVal;
+    return prev;
 }
 
 /*
