@@ -134,16 +134,10 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
-    const childNodes = where.childNodes;
-    
-    for (const node of childNodes) {
-        if (node.childNodes.length) {            
-            deleteTextNodesRecursive(node);            
-        }
-
-        if ((node.nodeType === 1 && node.innerText) || node.nodeType === 3) {
-            where.removeChild(node);
-        }        
+    var ch = Array.from(where.childNodes);
+  
+    for (var i = 0; i < ch.length; i++) {
+        ch[i].nodeType === 3 ? where.removeChild(ch[i]) : deleteTextNodesRecursive(ch[i]);
     }
 }
 
@@ -152,7 +146,7 @@ function deleteTextNodesRecursive(where) {
 
  Необходимо собрать статистику по всем узлам внутри элемента переданного в параметре root и вернуть ее в виде объекта
  Статистика должна содержать:
- - количество текстовых узлов
+ - количество текстовых узлоnpmв
  - количество элементов каждого класса
  - количество элементов каждого тега
  Для работы с классами рекомендуется использовать classList
