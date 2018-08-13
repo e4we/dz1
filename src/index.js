@@ -137,8 +137,8 @@ function deleteTextNodesRecursive(where) {
     const childNodes = where.childNodes;
     
     for (const node of childNodes) {
-        if (node.childNodes.length) {
-            deleteTextNodesRecursive(node);
+        if (node.childNodes.length) {            
+            deleteTextNodesRecursive(node);            
         }
 
         if ((node.nodeType === 1 && node.innerText) || node.nodeType === 3) {
