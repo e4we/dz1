@@ -55,11 +55,10 @@ addButton.addEventListener('click', () => {
 });
 
 listTable.addEventListener('click', function (e) {
-    if (!(e.target.dataset.key === undefined)) {
+    if (e.target.dataset.key) {
         deleteCookie(e.target.dataset.key);        
-    }    
-
-    addCookie();
+        addCookie();
+    }
 });
 
 const getCookies = () => {
