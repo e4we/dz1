@@ -31,6 +31,7 @@
    const newDiv = document.createElement('div');
    homeworkContainer.appendChild(newDiv);
  */
+
 const homeworkContainer = document.querySelector('#homework-container');
 // текстовое поле для фильтрации cookie
 const filterNameInput = homeworkContainer.querySelector('#filter-name-input');
@@ -43,10 +44,54 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-filterNameInput.addEventListener('keyup', function() {
-    // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+filterNameInput.addEventListener('keyup', function () {
+    addCookie();
 });
 
 addButton.addEventListener('click', () => {
-    // здесь можно обработать нажатие на кнопку "добавить cookie"
+    document.cookie = `${addNameInput.value}=${addValueInput.value}`;
+
+    addCookie();
 });
+
+listTable.addEventListener('click', function (e) {
+    if (!(e.target.dataset.key === undefined)) {
+        deleteCookie(e.target.dataset.key);        
+    }    
+
+    addCookie();
+});
+
+const getCookies = () => {
+    return document.cookie.split('; ').reduce((prev, current) => {
+        const [name, value] = current.split('=');
+
+        prev[name] = value;
+
+        return prev;
+    }, {});
+}
+
+const addCookie = () => {
+    const cookieObj = getCookies();
+
+    listTable.innerHTML = '';
+
+    for (let key in cookieObj) {
+        if (!(isInFilter(key, filterNameInput.value) || isInFilter(cookieObj[key], filterNameInput.value))) { 
+            continue;
+        }
+        
+        listTable.innerHTML += `<tr>
+                                <th>${key}</th>
+                                <th>${cookieObj[key]}</th>
+                                <th>
+                                  <button data-key='${key}'>Delete</button>
+                                </th>
+                                </tr>`;   
+    }
+}
+
+const isInFilter = (key, filterInput) => key.toLowerCase().indexOf(filterInput.toLowerCase()) !== -1 ? true : false;
+
+const deleteCookie = (name) => document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT';
